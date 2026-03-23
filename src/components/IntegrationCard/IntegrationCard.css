@@ -1,0 +1,79 @@
+@import '../../colorography/tokens.css';
+@import '../../typography/typography.css';
+
+/* ==========================================================================
+   IntegrationCard — integration tile with logo, category, description, CTA
+   ========================================================================== */
+
+.integration-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  align-items: flex-start;
+  padding: var(--spacing-24);
+  width: 400px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Header — logo + name
+   -------------------------------------------------------------------------- */
+
+.integration-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  height: 32px;
+}
+
+.integration-card__logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.integration-card__name {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-h3);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Category tag
+   -------------------------------------------------------------------------- */
+
+.integration-card__category {
+  display: inline-flex;
+  align-items: flex-start;
+  padding: var(--spacing-2) var(--spacing-12);
+  background: var(--color-tag-blue);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  color: var(--color-black);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Description
+   -------------------------------------------------------------------------- */
+
+.integration-card__desc {
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  color: var(--color-text-secondary);
+  margin: 0;
+  width: 314px;
+  height: 56px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
