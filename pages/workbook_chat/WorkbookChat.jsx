@@ -24,6 +24,8 @@ import { MenuBar } from '../../src/components/MenuBar';
 import { Button } from '../../src/components/Button/Button';
 import { Dialog } from '../../src/components/Dialog/Dialog';
 import { TextInput } from '../../src/components/TextInput/TextInput';
+import { TextArea } from '../../src/components/TextArea/TextArea';
+import { Checkbox } from '../../src/components/Checkbox/Checkbox';
 import {
   CaretDown,
   CaretRight,
@@ -61,7 +63,12 @@ import {
   Check,
   Notepad,
   FloppyDisk,
+  Plus,
 } from '@phosphor-icons/react';
+import {
+  PieChart, Pie, Cell, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
+} from 'recharts';
 import { PlannerChip } from '../../src/components/Tags/PlannerChip/PlannerChip';
 import { ModifyPlan } from '../../src/components/ModifyPlan/ModifyPlan';
 import { Tooltip } from '../../src/components/Popover/Tooltip/Tooltip';
@@ -88,6 +95,22 @@ function MemoIcon({ size = 16, color = 'currentColor' }) {
   );
 }
 
+function DashboardIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4.875 1.875H2.625C2.42609 1.875 2.23532 1.95402 2.09467 2.09467C1.95402 2.23532 1.875 2.42609 1.875 2.625V5.625C1.875 5.82391 1.95402 6.01468 2.09467 6.15533C2.23532 6.29598 2.42609 6.375 2.625 6.375H4.875C5.07391 6.375 5.26468 6.29598 5.40533 6.15533C5.54598 6.01468 5.625 5.82391 5.625 5.625V2.625C5.625 2.42609 5.54598 2.23532 5.40533 2.09467C5.26468 1.95402 5.07391 1.875 4.875 1.875ZM4.875 5.625H2.625V2.625H4.875V5.625ZM9.375 1.875H7.125C6.92609 1.875 6.73532 1.95402 6.59467 2.09467C6.45402 2.23532 6.375 2.42609 6.375 2.625V4.125C6.375 4.32391 6.45402 4.51468 6.59467 4.65533C6.73532 4.79598 6.92609 4.875 7.125 4.875H9.375C9.57391 4.875 9.76468 4.79598 9.90533 4.65533C10.046 4.51468 10.125 4.32391 10.125 4.125V2.625C10.125 2.42609 10.046 2.23532 9.90533 2.09467C9.76468 1.95402 9.57391 1.875 9.375 1.875ZM9.375 4.125H7.125V2.625H9.375V4.125ZM4.875 7.125H2.625C2.42609 7.125 2.23532 7.20402 2.09467 7.34467C1.95402 7.48532 1.875 7.67609 1.875 7.875V9.375C1.875 9.57391 1.95402 9.76468 2.09467 9.90533C2.23532 10.046 2.42609 10.125 2.625 10.125H4.875C5.07391 10.125 5.26468 10.046 5.40533 9.90533C5.54598 9.76468 5.625 9.57391 5.625 9.375V7.875C5.625 7.67609 5.54598 7.48532 5.40533 7.34467C5.26468 7.20402 5.07391 7.125 4.875 7.125ZM4.875 9.375H2.625V7.875H4.875V9.375ZM9.375 5.625H7.125C6.92609 5.625 6.73532 5.70402 6.59467 5.84467C6.45402 5.98532 6.375 6.17609 6.375 6.375V9.375C6.375 9.57391 6.45402 9.76468 6.59467 9.90533C6.73532 10.046 6.92609 10.125 7.125 10.125H9.375C9.57391 10.125 9.76468 10.046 9.90533 9.90533C10.046 9.76468 10.125 9.57391 10.125 9.375V6.375C10.125 6.17609 10.046 5.98532 9.90533 5.84467C9.76468 5.70402 9.57391 5.625 9.375 5.625ZM9.375 9.375H7.125V6.375H9.375V9.375Z" fill={color} />
+    </svg>
+  );
+}
+
+function CheckCircleOutlineIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill={color} viewBox="0 0 256 256">
+      <path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z" />
+    </svg>
+  );
+}
+
 function ScatterChartIcon({ size = 16, color = 'currentColor' }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill={color} viewBox="0 0 256 256">
@@ -95,6 +118,7 @@ function ScatterChartIcon({ size = 16, color = 'currentColor' }) {
     </svg>
   );
 }
+
 
 function DefinitionIcon({ size = 16, color = 'currentColor' }) {
   return (
@@ -686,6 +710,161 @@ const PLAN_STEPS_V2 = [
 /* ------------------------------------------------------------------ */
 
 const ANALYSIS_TITLE = 'Deal Closing Activities';
+
+/* ------------------------------------------------------------------ */
+/*  Chart data                                                          */
+/* ------------------------------------------------------------------ */
+
+const CHART_COLORS = [
+  'var(--color-chart-1)',
+  'var(--color-chart-3)',
+  'var(--color-chart-5)',
+];
+
+/* Pool of chart templates — randomly combined per query */
+const CHART_POOL = {
+  pie: [
+    {
+      title: 'Sales Activity Effectiveness',
+      data: [
+        { name: '0–10 Activities - 25% of total sales cycle time', value: 25, colorIndex: 0 },
+        { name: '11–30 Activities - 35% of total sales cycle time', value: 35, colorIndex: 1 },
+        { name: '31+ Activities - 40% of total sales cycle time', value: 40, colorIndex: 2 },
+      ],
+    },
+    {
+      title: 'Revenue by Channel',
+      data: [
+        { name: 'Direct Sales - 45% of total revenue', value: 45, colorIndex: 0 },
+        { name: 'Partner Channel - 30% of total revenue', value: 30, colorIndex: 1 },
+        { name: 'Online Self-Serve - 25% of total revenue', value: 25, colorIndex: 2 },
+      ],
+    },
+    {
+      title: 'Deal Stage Distribution',
+      data: [
+        { name: 'Prospecting - 40% of pipeline', value: 40, colorIndex: 0 },
+        { name: 'Negotiation - 35% of pipeline', value: 35, colorIndex: 1 },
+        { name: 'Closed Won - 25% of pipeline', value: 25, colorIndex: 2 },
+      ],
+    },
+    {
+      title: 'Customer Churn by Segment',
+      data: [
+        { name: 'Enterprise - 10% churn rate', value: 10, colorIndex: 0 },
+        { name: 'Mid-Market - 22% churn rate', value: 22, colorIndex: 1 },
+        { name: 'SMB - 68% churn rate', value: 68, colorIndex: 2 },
+      ],
+    },
+    {
+      title: 'Lead Source Breakdown',
+      data: [
+        { name: 'Inbound Marketing - 50% of leads', value: 50, colorIndex: 0 },
+        { name: 'Outbound Prospecting - 30% of leads', value: 30, colorIndex: 1 },
+        { name: 'Referrals - 20% of leads', value: 20, colorIndex: 2 },
+      ],
+    },
+  ],
+  bar: [
+    {
+      title: 'Average Account Health Score by Account Segment',
+      data: [
+        { segment: 'Enterprise', score: 88 },
+        { segment: 'Mid-Market', score: 83 },
+        { segment: 'SMB', score: 95 },
+      ],
+      yLabel: 'Account Health Score',
+      xLabel: 'Account Segment',
+    },
+    {
+      title: 'Average Deal Size by Region',
+      data: [
+        { segment: 'North America', score: 72 },
+        { segment: 'EMEA', score: 58 },
+        { segment: 'APAC', score: 45 },
+      ],
+      yLabel: 'Deal Size ($K)',
+      xLabel: 'Region',
+    },
+    {
+      title: 'Conversion Rate by Sales Rep',
+      data: [
+        { segment: 'Team A', score: 34 },
+        { segment: 'Team B', score: 52 },
+        { segment: 'Team C', score: 41 },
+        { segment: 'Team D', score: 67 },
+      ],
+      yLabel: 'Conversion Rate (%)',
+      xLabel: 'Sales Team',
+    },
+    {
+      title: 'Monthly Recurring Revenue by Quarter',
+      data: [
+        { segment: 'Q1', score: 62 },
+        { segment: 'Q2', score: 78 },
+        { segment: 'Q3', score: 85 },
+        { segment: 'Q4', score: 93 },
+      ],
+      yLabel: 'MRR Growth (%)',
+      xLabel: 'Quarter',
+    },
+    {
+      title: 'Customer Satisfaction Score by Product',
+      data: [
+        { segment: 'Analytics', score: 91 },
+        { segment: 'CRM', score: 76 },
+        { segment: 'Marketing', score: 84 },
+      ],
+      yLabel: 'CSAT Score',
+      xLabel: 'Product Line',
+    },
+  ],
+};
+
+/* Simple hash from a string to get a deterministic-ish seed */
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+}
+
+/* Pick a random title based on the query */
+const CHART_TITLES = [
+  'Activity Impact Overview',
+  'Pipeline Performance Summary',
+  'Revenue Analysis Dashboard',
+  'Sales Velocity Insights',
+  'Growth Metrics Overview',
+  'Account Health Dashboard',
+  'Conversion Funnel Analysis',
+  'Team Performance Breakdown',
+];
+
+function generateChartSections(query) {
+  const seed = hashStr(query + Date.now().toString());
+  const piePool = CHART_POOL.pie;
+  const barPool = CHART_POOL.bar;
+
+  /* Decide how many charts: 1-3, biased towards 2 */
+  const countRoll = seed % 10;
+  const chartCount = countRoll < 2 ? 1 : countRoll < 8 ? 2 : 3;
+
+  /* Pick chart types */
+  const types = ['pie', 'bar'];
+  const sections = [];
+  for (let i = 0; i < chartCount; i++) {
+    const typeIdx = (seed + i * 7) % types.length;
+    const type = types[typeIdx];
+    const pool = type === 'pie' ? piePool : barPool;
+    const dataIdx = (seed + i * 13) % pool.length;
+    sections.push({ ...pool[dataIdx], type });
+  }
+
+  const titleIdx = seed % CHART_TITLES.length;
+  return { title: CHART_TITLES[titleIdx], sections };
+}
 
 const ANALYSIS_STEPS = [
   'Closed Won Opportunities With Metrics',
@@ -1425,11 +1604,12 @@ function CloneIcon({ size = 16, color = 'currentColor' }) {
 /*  Action Card Dots Menu (shared)                                     */
 /* ------------------------------------------------------------------ */
 
-function ActionCardDotsMenu({ isLast = false }) {
+function ActionCardDotsMenu({ isLast = false, showClone = true, renameType, renameName = '' }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const ref = useRef(null);
   const btnRef = useRef(null);
+  const { openRename } = useContext(ModifyContext);
 
   useEffect(() => {
     if (!open) return;
@@ -1465,19 +1645,21 @@ function ActionCardDotsMenu({ isLast = false }) {
           <button
             type="button"
             className="wbc__action-card-dropdown-item"
-            onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+            onClick={(e) => { e.stopPropagation(); setOpen(false); if (renameType) openRename(renameType, renameName); }}
           >
             <PencilSimpleLine size={16} weight="regular" color="var(--color-icon-dark)" />
             <span>Rename</span>
           </button>
-          <button
-            type="button"
-            className="wbc__action-card-dropdown-item"
-            onClick={(e) => { e.stopPropagation(); setOpen(false); }}
-          >
-            <CloneIcon size={16} color="var(--color-icon-dark)" />
-            <span>Clone</span>
-          </button>
+          {showClone && (
+            <button
+              type="button"
+              className="wbc__action-card-dropdown-item"
+              onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+            >
+              <CloneIcon size={16} color="var(--color-icon-dark)" />
+              <span>Clone</span>
+            </button>
+          )}
           <button
             type="button"
             className={`wbc__action-card-dropdown-item${isLast ? ' wbc__action-card-dropdown-item--danger' : ' wbc__action-card-dropdown-item--disabled'}`}
@@ -1527,7 +1709,7 @@ function GuidanceActionCard({ planReady, onClick, isActive, isLast = false }) {
           <p className="wbc__action-card-title" title={PLAN_TITLE}>{PLAN_TITLE}</p>
         </div>
 
-        <ActionCardDotsMenu isLast={isLast} />
+        <ActionCardDotsMenu isLast={isLast} showClone={false} renameType="workbook" renameName={PLAN_TITLE} />
       </div>
     </div>
   );
@@ -1569,7 +1751,7 @@ function AnalysisActionCard({ isActive, onClick, isLast = false }) {
           </div>
           <p className="wbc__action-card-title">{ANALYSIS_TITLE}</p>
         </div>
-        <ActionCardDotsMenu isLast={isLast} />
+        <ActionCardDotsMenu isLast={isLast} showClone={false} renameType="analysis" renameName={ANALYSIS_TITLE} />
       </div>
 
       {/* Steps tracker */}
@@ -1633,7 +1815,7 @@ function MemoActionCard({ title, isActive, onClick, isLast = false }) {
           </div>
           <p className="wbc__action-card-title" title={title}>{title}</p>
         </div>
-        <ActionCardDotsMenu isLast={isLast} />
+        <ActionCardDotsMenu isLast={isLast} renameType="memo" renameName={title} />
       </div>
     </div>
   );
@@ -1643,7 +1825,7 @@ function MemoActionCard({ title, isActive, onClick, isLast = false }) {
 /*  Chat Text Box (disabled state)                                     */
 /* ------------------------------------------------------------------ */
 
-function ChatTextBox({ active = false, analysisReady = false, onGenerateMemo }) {
+function ChatTextBox({ active = false, analysisReady = false, onGenerateMemo, onCreateChart }) {
   const [query, setQuery] = useState('');
   const [selectedMode, setSelectedMode] = useState('quick-analysis');
   const [modeDropdownOpen, setModeDropdownOpen] = useState(false);
@@ -1769,11 +1951,459 @@ function ChatTextBox({ active = false, analysisReady = false, onGenerateMemo }) 
               if (selectedMode === 'generate-memo' && onGenerateMemo) {
                 onGenerateMemo(query.trim());
                 setQuery('');
+              } else if (selectedMode === 'create-chart' && onCreateChart) {
+                onCreateChart(query.trim());
+                setQuery('');
               }
             }}
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Panel Title Dropdown — Rename / Clone / Delete on header click      */
+/* ------------------------------------------------------------------ */
+
+function PanelTitleDropdown({ showClone = true, renameType, renameName = '' }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const { openRename } = useContext(ModifyContext);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
+  return (
+    <div className="wbc__panel-title-dropdown-wrap" ref={ref}>
+      <button
+        type="button"
+        className="wbc__panel-title-dropdown-trigger"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <CaretDown size={12} weight="regular" color="var(--color-icon-medium)" />
+      </button>
+      {open && (
+        <div className="wbc__panel-title-dropdown" role="menu">
+          <button
+            type="button"
+            className="wbc__panel-title-dropdown-item"
+            role="menuitem"
+            onClick={() => { setOpen(false); openRename(renameType, renameName); }}
+          >
+            <PencilSimple size={16} weight="regular" color="var(--color-icon-dark)" />
+            <span>Rename</span>
+          </button>
+          {showClone && (
+            <button
+              type="button"
+              className="wbc__panel-title-dropdown-item"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+            >
+              <CloneIcon size={16} color="var(--color-icon-dark)" />
+              <span>Clone</span>
+            </button>
+          )}
+          <button
+            type="button"
+            className="wbc__panel-title-dropdown-item wbc__panel-title-dropdown-item--danger"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+          >
+            <TrashSimple size={16} weight="regular" color="#F93D3D" />
+            <span>Delete</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Use in Sage Dialog                                                  */
+/* ------------------------------------------------------------------ */
+
+const SAGE_DESCRIPTIONS = [
+  'This widget breaks down how total sales cycle time is distributed across different activity levels and shows how higher activity volumes correlate with longer sales cycles. It highlights which activity ranges consume the most time before deals close, helping you identify where excessive engagement may be slowing progress and where focusing on fewer, higher-quality activities could shorten the sales cycle.',
+  'This widget summarizes completed sales activities by type, channel, and outcome, providing a clear view of team engagement patterns. It helps identify which activity types drive the most meaningful interactions and which may need optimization.',
+  'This widget analyzes the effectiveness of different sales activities by measuring their correlation with deal progression and close rates. It surfaces which activities have the highest impact on moving opportunities forward.',
+  'This widget identifies the most impactful activity patterns by examining sequences and combinations of sales activities that consistently lead to successful deal closures.',
+  'This widget segments activity effectiveness by deal size, revealing how the impact of different sales activities varies across enterprise, mid-market, and SMB deal categories.',
+];
+
+function RegenerateButton({ onRegenerate, regenerating }) {
+  return (
+    <Button
+      variant="secondary"
+      size="sm"
+      icon={regenerating ? null : Sparkle}
+      label={regenerating ? (
+        <span className="wbc__regen-label">
+          <img src={spinnerGif} alt="" width={12} height={12} />
+          Regenerating...
+        </span>
+      ) : 'Regenerate'}
+      onClick={onRegenerate}
+      disabled={regenerating}
+    />
+  );
+}
+
+function useRegenerate(initialDesc, descriptions) {
+  const [description, setDescription] = useState(initialDesc);
+  const [regenerating, setRegenerating] = useState(false);
+
+  function handleRegenerate() {
+    setRegenerating(true);
+    setTimeout(() => {
+      const idx = Math.floor(Math.random() * descriptions.length);
+      setDescription(descriptions[idx]);
+      setRegenerating(false);
+    }, 1500);
+  }
+
+  return { description, setDescription, regenerating, handleRegenerate };
+}
+
+function UseInSageDialog({ stepName, onClose }) {
+  const [tableName, setTableName] = useState(stepName);
+  const { description, setDescription, regenerating, handleRegenerate } = useRegenerate(
+    SAGE_DESCRIPTIONS[ANALYSIS_STEPS.indexOf(stepName)] || SAGE_DESCRIPTIONS[0],
+    SAGE_DESCRIPTIONS
+  );
+
+  return (
+    <div className="wbc__dialog-overlay">
+      <div className="wbc__sage-dialog">
+        {/* Header */}
+        <div className="wbc__sage-dialog-header">
+          <span className="text-h2-semibold">Use in Sage</span>
+          <button
+            type="button"
+            className="wbc__sage-dialog-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <X size={16} weight="regular" color="var(--color-icon-medium)" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="wbc__sage-dialog-body">
+          <TextInput
+            label={<>Table Name<span className="wbc__sage-required">*</span></>}
+            value={tableName}
+            onChange={(e) => setTableName(e.target.value)}
+          />
+          <div className="wbc__sage-dialog-desc-group">
+            <TextArea
+              label={<>Table Description<span className="wbc__sage-required">*</span></>}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              disabled={regenerating}
+            />
+            <div className="wbc__sage-dialog-regen">
+              <RegenerateButton onRegenerate={handleRegenerate} regenerating={regenerating} />
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="wbc__sage-dialog-footer">
+          <Button variant="ghost" size="md" label="Cancel" onClick={onClose} />
+          <Button variant="primary" size="md" label="Save" onClick={onClose} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Add to Dashboard Dialog                                             */
+/* ------------------------------------------------------------------ */
+
+const MOCK_DASHBOARDS = [
+  'Sales Performance Dashboard',
+  'Revenue Analytics',
+  'Pipeline Overview',
+  'Team Metrics Dashboard',
+  'Executive Summary',
+];
+
+const DASHBOARD_DESCRIPTIONS = [
+  'This widget surfaces all Closed Won opportunities along with their key performance metrics, giving you a clear view of what successful deals look like. It helps you analyze patterns across won deals such as deal size, sales cycle length, activity volume, and conversion efficiency.',
+  'This widget breaks down how total sales cycle time is distributed across different activity levels and shows how higher activity volumes correlate with longer sales cycles.',
+  'This widget summarizes completed sales activities by type, channel, and outcome, providing a clear view of team engagement patterns.',
+  'This widget analyzes the effectiveness of different sales activities by measuring their correlation with deal progression and close rates.',
+  'This widget identifies the most impactful activity patterns by examining sequences and combinations of sales activities that consistently lead to successful deal closures.',
+];
+
+function AddToDashboardDialog({ widgetTitle, onClose, onSave, mode = 'add' }) {
+  const [title, setTitle] = useState(widgetTitle);
+  const { description, setDescription, regenerating, handleRegenerate } = useRegenerate(
+    DASHBOARD_DESCRIPTIONS[0],
+    DASHBOARD_DESCRIPTIONS
+  );
+  const [selectedDashboards, setSelectedDashboards] = useState([]);
+  const [customDashboards, setCustomDashboards] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const dropdownRef = useRef(null);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    function handleClick(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+        setSearchQuery('');
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [dropdownOpen]);
+
+  const allDashboards = [...MOCK_DASHBOARDS, ...customDashboards];
+  const filtered = allDashboards.filter(
+    (d) => d.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const allSelected = filtered.length > 0 && filtered.every((d) => selectedDashboards.includes(d));
+  const showCreate = searchQuery.trim() && !allDashboards.some(
+    (d) => d.toLowerCase() === searchQuery.trim().toLowerCase()
+  );
+
+  function toggleDashboard(name) {
+    setSelectedDashboards((prev) =>
+      prev.includes(name) ? prev.filter((d) => d !== name) : [...prev, name]
+    );
+  }
+
+  function toggleSelectAll() {
+    if (allSelected) {
+      setSelectedDashboards((prev) => prev.filter((d) => !filtered.includes(d)));
+    } else {
+      setSelectedDashboards((prev) => [...new Set([...prev, ...filtered])]);
+    }
+  }
+
+  function createDashboard(name) {
+    setCustomDashboards((prev) => [...prev, name]);
+    setSelectedDashboards((prev) => [...prev, name]);
+    setSearchQuery('');
+  }
+
+  function removeDashboard(name) {
+    setSelectedDashboards((prev) => prev.filter((d) => d !== name));
+  }
+
+  function handleOpen() {
+    setDropdownOpen(true);
+    setTimeout(() => searchRef.current?.focus(), 0);
+  }
+
+  return (
+    <div className="wbc__dialog-overlay">
+      <div className="wbc__sage-dialog">
+        {/* Header */}
+        <div className="wbc__sage-dialog-header">
+          <span className="text-h2-semibold">Add to Dashboard</span>
+          <button
+            type="button"
+            className="wbc__sage-dialog-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <X size={16} weight="regular" color="var(--color-icon-medium)" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="wbc__sage-dialog-body">
+          <TextInput
+            label={<>Widget Title<span className="wbc__sage-required">*</span></>}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className="wbc__sage-dialog-desc-group">
+            <TextArea
+              label="Widget Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              disabled={regenerating}
+            />
+            <div className="wbc__sage-dialog-regen">
+              <RegenerateButton onRegenerate={handleRegenerate} regenerating={regenerating} />
+            </div>
+          </div>
+
+          {/* Dashboard picker */}
+          <div className="wbc__dash-picker">
+            <label className="wbc__dash-picker-label text-h3-medium">
+              Add this widget to a dashboard<span className="wbc__sage-required">*</span>
+            </label>
+            <div className="wbc__dash-picker-field" ref={dropdownRef}>
+              <div
+                className="wbc__dash-picker-input"
+                onClick={handleOpen}
+              >
+                <div className="wbc__dash-picker-tags">
+                  {selectedDashboards.map((d) => {
+                    const isNew = customDashboards.includes(d);
+                    return (
+                      <span key={d} className="wbc__dash-tag">
+                        {isNew && <span className="wbc__dash-tag-new">New</span>}
+                        <span className="wbc__dash-tag-name">{d}</span>
+                        <button
+                          type="button"
+                          className="wbc__dash-tag-remove"
+                          onClick={(e) => { e.stopPropagation(); removeDashboard(d); }}
+                        >
+                          <X size={12} weight="regular" color="var(--color-icon-medium)" />
+                        </button>
+                      </span>
+                    );
+                  })}
+                  <input
+                    ref={searchRef}
+                    className="wbc__dash-picker-search"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={selectedDashboards.length ? '' : 'Search or create a dashboard'}
+                    onClick={(e) => { e.stopPropagation(); handleOpen(); }}
+                  />
+                </div>
+                <CaretDown size={20} weight="regular" color="var(--color-neutral-300)" />
+              </div>
+
+              {dropdownOpen && (
+                <div className="wbc__dash-picker-dropdown">
+                  {/* Select all */}
+                  <div
+                    className="wbc__dash-picker-option"
+                    onClick={toggleSelectAll}
+                  >
+                    <Checkbox
+                      checked={allSelected}
+                      indeterminate={!allSelected && filtered.some((d) => selectedDashboards.includes(d))}
+                      onChange={toggleSelectAll}
+                    />
+                    <span className="wbc__dash-picker-option-label">Select all</span>
+                  </div>
+
+                  {/* Dashboard list */}
+                  <div className="wbc__dash-picker-list">
+                    {filtered.map((d) => (
+                      <div
+                        key={d}
+                        className="wbc__dash-picker-option"
+                        onClick={() => toggleDashboard(d)}
+                      >
+                        <Checkbox
+                          checked={selectedDashboards.includes(d)}
+                          onChange={() => toggleDashboard(d)}
+                        />
+                        <span className="wbc__dash-picker-option-label">{d}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Create new */}
+                  {showCreate && (
+                    <div
+                      className="wbc__dash-picker-create"
+                      onClick={() => createDashboard(searchQuery.trim())}
+                    >
+                      <div className="wbc__dash-picker-create-btn">
+                        <Plus size={16} weight="regular" color="var(--color-primary-500)" />
+                        <span className="wbc__dash-picker-create-text">Create</span>
+                      </div>
+                      <span className="wbc__dash-picker-create-chip">
+                        <SquaresFour size={16} weight="regular" color="var(--color-neutral-900)" />
+                        <span>{searchQuery.trim()}</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="wbc__sage-dialog-footer">
+          <Button variant="ghost" size="md" label="Cancel" onClick={onClose} />
+          <Button variant="primary" size="md" label={mode === 'edit' ? 'Update' : 'Save'} onClick={() => { if (onSave) onSave(); onClose(); }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Added to Dashboard Dropdown Button                                  */
+/* ------------------------------------------------------------------ */
+
+function AddedToDashboardBtn({ onEdit, onRemove }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
+  return (
+    <div className="wbc__added-dash-wrap" ref={ref}>
+      <button
+        type="button"
+        className="btn btn--secondary btn--sm wbc__added-dash-btn"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="btn__icon">
+          <CheckCircleOutlineIcon size={14} />
+        </span>
+        <span>Added to Dashboard</span>
+        <span className="btn__icon">
+          <CaretDown size={12} weight="regular" />
+        </span>
+      </button>
+      {open && (
+        <div className="wbc__added-dash-dropdown">
+          <button
+            type="button"
+            className="wbc__added-dash-dropdown-item"
+            onClick={() => { setOpen(false); onEdit(); }}
+          >
+            <PencilSimple size={16} weight="regular" color="var(--color-icon-dark)" />
+            <span>Edit Details</span>
+          </button>
+          <button
+            type="button"
+            className="wbc__added-dash-dropdown-item wbc__added-dash-dropdown-item--danger"
+            onClick={() => { setOpen(false); onRemove(); }}
+          >
+            <TrashSimple size={16} weight="regular" color="#F93D3D" />
+            <span>Remove from Dashboards</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -1786,6 +2416,10 @@ function AnalysisPanel() {
   const { activeAnalysisStep, running, allStepsDone, runAllSteps } = useContext(ModifyContext);
   const currentStep = ANALYSIS_STEPS[activeAnalysisStep] || ANALYSIS_STEPS[0];
   const [activeTab, setActiveTab] = useState('output');
+  const [sageDialogOpen, setSageDialogOpen] = useState(false);
+  const [dashDialogOpen, setDashDialogOpen] = useState(false);
+  const [dashDialogMode, setDashDialogMode] = useState('add');
+  const [addedToDashboard, setAddedToDashboard] = useState(false);
   const now = new Date();
   const timestamp = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: undefined, hour12: true, timeZoneName: 'short' });
@@ -1801,6 +2435,7 @@ function AnalysisPanel() {
           <span className="wbc__analysis-panel-title">
             <strong>Analysis:</strong> {ANALYSIS_TITLE} Analysis
           </span>
+          <PanelTitleDropdown showClone={false} renameType="analysis" renameName={ANALYSIS_TITLE} />
         </div>
       </div>
 
@@ -1840,22 +2475,14 @@ function AnalysisPanel() {
             />
           </div>
           <div className="wbc__analysis-tab-actions">
-            {allStepsDone ? (
-              <>
-                <Button variant="secondary" size="sm" icon={Sparkle} label="Use in Sage" />
-                <Button variant="secondary" size="sm" icon={SquaresFour} label="Add to Dashboard" />
-              </>
+            <Button variant="secondary" size="sm" icon={Sparkle} label="Use in Sage" disabled={!allStepsDone} onClick={() => setSageDialogOpen(true)} />
+            {addedToDashboard ? (
+              <AddedToDashboardBtn
+                onEdit={() => { setDashDialogMode('edit'); setDashDialogOpen(true); }}
+                onRemove={() => setAddedToDashboard(false)}
+              />
             ) : (
-              <>
-                <button className="wbc__analysis-action-btn" type="button">
-                  <Sparkle size={12} weight="regular" />
-                  <span>Use in Sage</span>
-                </button>
-                <button className="wbc__analysis-action-btn" type="button">
-                  <SquaresFour size={12} weight="regular" />
-                  <span>Add to Dashboard</span>
-                </button>
-              </>
+              <Button variant="secondary" size="sm" icon={DashboardIcon} label="Add to Dashboard" disabled={!allStepsDone} onClick={() => { setDashDialogMode('add'); setDashDialogOpen(true); }} />
             )}
             <button className="wbc__analysis-icon-btn" type="button">
               <DownloadSimple size={16} weight="regular" />
@@ -1934,7 +2561,6 @@ function AnalysisPanel() {
               size="md"
               icon={ArrowCounterClockwise}
               label="Rerun All Steps"
-              disabled
             />
           </div>
         </div>
@@ -1947,6 +2573,21 @@ function AnalysisPanel() {
             </span>
           </div>
         </div>
+      )}
+
+      {sageDialogOpen && (
+        <UseInSageDialog
+          stepName={currentStep}
+          onClose={() => setSageDialogOpen(false)}
+        />
+      )}
+      {dashDialogOpen && (
+        <AddToDashboardDialog
+          widgetTitle={currentStep}
+          mode={dashDialogMode}
+          onClose={() => setDashDialogOpen(false)}
+          onSave={() => setAddedToDashboard(true)}
+        />
       )}
     </div>
   );
@@ -2099,6 +2740,7 @@ function MemoPanel() {
           <span className="wbc__memo-panel-title">
             <strong>Memo:</strong> {memoData.query}
           </span>
+          <PanelTitleDropdown showClone={true} renameType="memo" renameName={memoData.query} />
         </div>
       </div>
 
@@ -2161,6 +2803,309 @@ function MemoPanel() {
           expanded={activeModifyId === 'memo'}
           onExpandedChange={(val) => setActiveModifyId(val ? 'memo' : null)}
         />
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Chart Tooltips                                                      */
+/* ------------------------------------------------------------------ */
+
+function ChartPieTooltip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const { name, value } = payload[0];
+  return (
+    <div className="wbc__chart-tooltip">
+      <div className="wbc__chart-tooltip-row">
+        <span
+          className="wbc__chart-tooltip-dot"
+          style={{ backgroundColor: CHART_COLORS[payload[0].payload.colorIndex] }}
+        />
+        <p className="wbc__chart-tooltip-label">{name}</p>
+      </div>
+      <p className="wbc__chart-tooltip-value">{value}%</p>
+    </div>
+  );
+}
+
+function ChartBarTooltip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div className="wbc__chart-tooltip">
+      <p className="wbc__chart-tooltip-label">{label}</p>
+      <p className="wbc__chart-tooltip-value">Health Score: {payload[0].value}</p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Chart Panel — right panel when Create Chart mode used               */
+/* ------------------------------------------------------------------ */
+
+function ChartPanel() {
+  const {
+    chartData, chartLoading,
+    activeModifyId, setActiveModifyId,
+  } = useContext(ModifyContext);
+  const [activeTab, setActiveTab] = useState('output');
+  const [pieActiveIndex, setPieActiveIndex] = useState(null);
+  const [dashDialogOpen, setDashDialogOpen] = useState(false);
+  const [dashDialogTitle, setDashDialogTitle] = useState('');
+  const now = new Date();
+  const timestamp = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    + ', ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZoneName: 'short' });
+
+  if (chartLoading) {
+    return (
+      <div className="wbc__chart-panel">
+        <div className="wbc__chart-panel-header">
+          <div className="wbc__chart-panel-title-area">
+            <ScatterChartIcon size={22} color="var(--color-icon-medium)" />
+            <span className="wbc__chart-panel-title">
+              <strong>Chart:</strong> Generating...
+            </span>
+          </div>
+        </div>
+        <div className="wbc__chart-panel-body wbc__chart-panel-body--loading">
+          <img src={spinnerGif} alt="Generating chart" width={32} height={32} />
+          <span className="wbc__chart-loading-text">Generating charts...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!chartData) return null;
+
+  const sections = chartData.sections || [];
+
+  return (
+    <div className="wbc__chart-panel">
+      {/* Panel header */}
+      <div className="wbc__chart-panel-header">
+        <div className="wbc__chart-panel-title-area">
+          <ScatterChartIcon size={22} color="var(--color-icon-medium)" />
+          <span className="wbc__chart-panel-title">
+            <strong>Chart:</strong> {chartData.title}
+          </span>
+          <PanelTitleDropdown showClone={true} renameType="chart" renameName={chartData.title} />
+        </div>
+        <span className="wbc__chart-panel-timestamp">{timestamp}</span>
+      </div>
+
+      {/* Body — scrollable chart sections */}
+      <div className="wbc__chart-panel-body">
+        {sections.map((section, idx) => (
+          <div key={idx} className="wbc__chart-section">
+            {/* Section title */}
+            <div className="wbc__chart-section-title">
+              <span className="text-body-1-medium">
+                {idx + 1}. {section.title}
+              </span>
+            </div>
+
+            {/* Tabs + actions row */}
+            <div className="wbc__chart-tabs-row">
+              <div className="wbc__chart-tabs">
+                <TabToggle
+                  icon={<ScatterChartIcon size={12} />}
+                  label="Output"
+                  active={activeTab === 'output'}
+                  onClick={() => setActiveTab('output')}
+                />
+                <TabToggle
+                  icon={<GearSix size={12} weight="regular" />}
+                  label="Formula"
+                  active={activeTab === 'formula'}
+                  onClick={() => setActiveTab('formula')}
+                />
+              </div>
+              <div className="wbc__chart-tab-actions">
+                <Button variant="secondary" size="sm" icon={DashboardIcon} label="Add to Dashboard" onClick={() => { setDashDialogTitle(section.title); setDashDialogOpen(true); }} />
+                <button className="wbc__chart-icon-btn" type="button">
+                  <DownloadSimple size={16} weight="regular" />
+                </button>
+                <button className="wbc__chart-icon-btn" type="button">
+                  <DotsThree size={16} weight="regular" />
+                </button>
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div className="wbc__chart-container">
+              {section.type === 'pie' ? (
+                <div className="wbc__chart-pie-wrapper">
+                  <div className="wbc__chart-pie-legend">
+                    {section.data.map((entry, i) => (
+                      <div
+                        className="wbc__chart-pie-legend-item"
+                        key={i}
+                        onMouseEnter={() => setPieActiveIndex(i)}
+                        onMouseLeave={() => setPieActiveIndex(null)}
+                      >
+                        <div
+                          className="wbc__chart-pie-legend-swatch"
+                          style={{
+                            backgroundColor: CHART_COLORS[entry.colorIndex],
+                            opacity: pieActiveIndex === null || pieActiveIndex === i ? 1 : 0.4,
+                          }}
+                        />
+                        <span
+                          className="wbc__chart-pie-legend-label"
+                          style={{
+                            opacity: pieActiveIndex === null || pieActiveIndex === i ? 1 : 0.5,
+                          }}
+                        >
+                          {entry.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <ResponsiveContainer width="100%" height={340}>
+                    <PieChart>
+                      <Pie
+                        data={section.data}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={80}
+                        outerRadius={150}
+                        dataKey="value"
+                        stroke="none"
+                        onMouseEnter={(_, index) => setPieActiveIndex(index)}
+                        onMouseLeave={() => setPieActiveIndex(null)}
+                      >
+                        {section.data.map((entry, i) => (
+                          <Cell
+                            key={i}
+                            fill={CHART_COLORS[entry.colorIndex]}
+                            opacity={pieActiveIndex === null || pieActiveIndex === i ? 1 : 0.4}
+                            style={{ cursor: 'pointer', transition: 'opacity 0.2s ease' }}
+                          />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip content={<ChartPieTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="wbc__chart-bar-wrapper">
+                  <span className="wbc__chart-bar-y-label">{section.yLabel || 'Value'}</span>
+                  <div className="wbc__chart-bar-inner">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart data={section.data} barSize={50}>
+                        <CartesianGrid
+                          strokeDasharray="0"
+                          stroke="var(--color-neutral-100)"
+                          vertical={false}
+                        />
+                        <XAxis
+                          dataKey="segment"
+                          tick={{
+                            fontFamily: 'var(--font-family-primary)',
+                            fontSize: 12,
+                            fill: 'var(--color-text-secondary)',
+                          }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          domain={[0, 100]}
+                          ticks={[0, 25, 50, 75, 100]}
+                          tick={{
+                            fontFamily: 'var(--font-family-primary)',
+                            fontSize: 10,
+                            fill: 'var(--color-text-secondary)',
+                          }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <RechartsTooltip
+                          content={<ChartBarTooltip />}
+                          cursor={{ fill: 'var(--color-primary-50)', radius: 4 }}
+                        />
+                        <Bar
+                          dataKey="score"
+                          fill="var(--color-primary-100)"
+                          radius={[0, 0, 0, 0]}
+                          activeBar={{ fill: 'var(--color-primary-300)', cursor: 'pointer' }}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <p className="wbc__chart-bar-x-label">{section.xLabel || 'Category'}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Modify Chart */}
+              <div className="wbc__chart-modify-wrap">
+                <ModifyPlan
+                  label="Modify Chart"
+                  placeholder="Adjust this chart to... (e.g., change chart type, filter data)"
+                  modifications={[]}
+                  onAdd={() => {}}
+                  onEdit={() => {}}
+                  onDelete={() => {}}
+                  expanded={activeModifyId === `chart-${idx}`}
+                  onExpandedChange={(val) => setActiveModifyId(val ? `chart-${idx}` : null)}
+                />
+              </div>
+            </div>
+
+            {idx < sections.length - 1 && <div className="wbc__chart-section-divider" />}
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="wbc__chart-panel-footer">
+        <Button
+          variant="secondary"
+          size="md"
+          icon={CheckCircle}
+          label="Apply Changes"
+          disabled
+        />
+      </div>
+
+      {dashDialogOpen && (
+        <AddToDashboardDialog
+          widgetTitle={dashDialogTitle}
+          onClose={() => setDashDialogOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Chart Action Card (left panel)                                      */
+/* ------------------------------------------------------------------ */
+
+function ChartActionCard({ title, count = 0, isActive, onClick, isLast = false }) {
+  return (
+    <div
+      className={`wbc__action-card ${isActive ? 'wbc__action-card--active' : ''}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="wbc__action-card-inner">
+        <div className="wbc__action-card-icon-frame">
+          <div className="wbc__action-card-icon-container">
+            <ScatterChartIcon size={36} color="#757a97" />
+          </div>
+        </div>
+        <div className="wbc__action-card-content">
+          <div className="wbc__action-card-meta">
+            <CheckCircle size={12} weight="fill" color="var(--color-success)" />
+            <span className="wbc__action-card-meta-text">Chart</span>
+            {count >= 1 && (
+              <span className="wbc__chart-count-badge">{count}</span>
+            )}
+          </div>
+          <p className="wbc__action-card-title" title={title}>{title}</p>
+        </div>
+        <ActionCardDotsMenu isLast={isLast} renameType="chart" renameName={title} />
       </div>
     </div>
   );
@@ -2261,16 +3206,31 @@ export function WorkbookChat({
 }) {
   const [activeCard, setActiveCard] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const hasSeenPlan = localStorage.getItem('wbc_planReady') === 'true';
   const [planReady, setPlanReady] = useState(false);
   const [titleDropdownOpen, setTitleDropdownOpen] = useState(false);
   const titleDropdownRef = useRef(null);
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [renameValue, setRenameValue] = useState('Q1 Pipeline Review');
+  /* Rename dialog — { type: 'workbook'|'analysis'|'memo'|'chart', value: string } */
+  const [renameDialog, setRenameDialog] = useState(null);
 
-  /* Auto-complete building plan after 5 seconds */
+  const openRename = useCallback((type, currentName) => {
+    setRenameDialog({ type, value: currentName });
+  }, []);
+
+  const RENAME_LABELS = {
+    workbook: { title: 'Rename Workbook', label: 'Workbook name', placeholder: 'Enter workbook name' },
+    analysis: { title: 'Rename Analysis', label: 'Analysis name', placeholder: 'Enter analysis name' },
+    memo: { title: 'Rename Memo', label: 'Memo name', placeholder: 'Enter memo name' },
+    chart: { title: 'Rename Chart', label: 'Chart name', placeholder: 'Enter chart name' },
+  };
+
+  /* Auto-complete building plan — 2s if returning, 5s on first visit */
   useEffect(() => {
-    if (planReady) return;
-    const timer = setTimeout(() => setPlanReady(true), 5000);
+    if (planReady) {
+      localStorage.setItem('wbc_planReady', 'true');
+      return;
+    }
+    const timer = setTimeout(() => setPlanReady(true), hasSeenPlan ? 2000 : 5000);
     return () => clearTimeout(timer);
   }, [planReady]);
 
@@ -2292,7 +3252,7 @@ export function WorkbookChat({
   const [showingDiff, setShowingDiff] = useState(false);
   const [running, setRunning] = useState(false);
   const [allStepsDone, setAllStepsDone] = useState(false);
-  const [activePanel, setActivePanel] = useState('plan'); /* 'plan' | 'analysis' */
+  const [activePanel, setActivePanel] = useState('plan'); /* 'plan' | 'analysis' | 'memo' | 'chart' */
   const [analysisSource, setAnalysisSource] = useState(null); /* { planVersion } */
   const [activeAnalysisStep, setActiveAnalysisStep] = useState(0);
   const [activeModifyId, setActiveModifyId] = useState(null);
@@ -2381,6 +3341,23 @@ export function WorkbookChat({
     setMemoModifications((prev) => prev.filter((m) => m.id !== id));
   }, []);
 
+  /* Chart state */
+  const [chartData, setChartData] = useState(null);
+  const [chartLoading, setChartLoading] = useState(false);
+
+  const handleCreateChart = useCallback((query) => {
+    setChartLoading(true);
+    setChartData(null);
+    setActivePanel('chart');
+    /* Generate dynamic chart sections based on query */
+    const generated = generateChartSections(query);
+    /* Simulate generation delay */
+    setTimeout(() => {
+      setChartData({ title: generated.title, query, sections: generated.sections });
+      setChartLoading(false);
+    }, 3000);
+  }, []);
+
   const modifyCtx = useMemo(() => ({
     activeModifyId, setActiveModifyId,
     modifications, addModification, editModification, deleteModification, clearModifications,
@@ -2388,7 +3365,9 @@ export function WorkbookChat({
     isViewingOldVersion: viewingVersion < planVersion,
     running, allStepsDone, activeAnalysisStep, setActiveAnalysisStep, runAllSteps, analysisSource,
     memoData, memoLoading, memoModifications, addMemoModification, editMemoModification, deleteMemoModification,
-  }), [activeModifyId, modifications, addModification, editModification, deleteModification, clearModifications, applyingChanges, applyChanges, planVersion, viewingVersion, running, allStepsDone, activeAnalysisStep, runAllSteps, analysisSource, memoData, memoLoading, memoModifications, addMemoModification, editMemoModification, deleteMemoModification]);
+    chartData, chartLoading,
+    openRename,
+  }), [activeModifyId, modifications, addModification, editModification, deleteModification, clearModifications, applyingChanges, applyChanges, planVersion, viewingVersion, running, allStepsDone, activeAnalysisStep, runAllSteps, analysisSource, memoData, memoLoading, memoModifications, addMemoModification, editMemoModification, deleteMemoModification, chartData, chartLoading, openRename]);
 
   const nextCard = useCallback(() => {
     setActiveCard((prev) => (prev + 1) % TUTORIAL_CARDS.length);
@@ -2419,6 +3398,7 @@ export function WorkbookChat({
         isOpen={menuOpen}
         onToggle={onMenuToggle}
         onProfile={() => onNavigate && onNavigate('profile')}
+        onSettings={() => onNavigate && onNavigate('settings')}
       />
 
       {/* Left chat panel */}
@@ -2447,8 +3427,7 @@ export function WorkbookChat({
                   role="menuitem"
                   onClick={() => {
                     setTitleDropdownOpen(false);
-                    setRenameValue('Q1 Pipeline Review');
-                    setRenameDialogOpen(true);
+                    openRename('workbook', 'Q1 Pipeline Review');
                   }}
                 >
                   <PencilSimpleLine size={16} weight="regular" color="var(--color-icon-dark)" />
@@ -2496,13 +3475,13 @@ export function WorkbookChat({
             planReady={planReady}
             isActive={activePanel === 'plan'}
             onClick={() => setActivePanel('plan')}
-            isLast={!(running || allStepsDone) && !memoData && !memoLoading}
+            isLast={!(running || allStepsDone) && !memoData && !memoLoading && !chartData && !chartLoading}
           />
           {(running || allStepsDone) && (
             <AnalysisActionCard
               isActive={activePanel === 'analysis'}
               onClick={() => setActivePanel('analysis')}
-              isLast={!memoData && !memoLoading}
+              isLast={!memoData && !memoLoading && !chartData && !chartLoading}
             />
           )}
           {(memoData || memoLoading) && (
@@ -2510,6 +3489,15 @@ export function WorkbookChat({
               title={memoData ? memoData.title : 'Generating memo...'}
               isActive={activePanel === 'memo'}
               onClick={() => setActivePanel('memo')}
+              isLast={!chartData && !chartLoading}
+            />
+          )}
+          {(chartData || chartLoading) && (
+            <ChartActionCard
+              title={chartData ? `Chart: ${chartData.title}` : 'Generating chart...'}
+              count={chartData ? chartData.sections.length : 0}
+              isActive={activePanel === 'chart'}
+              onClick={() => setActivePanel('chart')}
               isLast={true}
             />
           )}
@@ -2517,12 +3505,14 @@ export function WorkbookChat({
 
         {/* Text box */}
         <div className="wbc__chat-footer">
-          <ChatTextBox active={planReady && !applyingChanges && !running} analysisReady={allStepsDone} onGenerateMemo={handleGenerateMemo} />
+          <ChatTextBox active={planReady && !applyingChanges && !running} analysisReady={allStepsDone} onGenerateMemo={handleGenerateMemo} onCreateChart={handleCreateChart} />
         </div>
       </div>
 
       {/* Right panel */}
-      {activePanel === 'memo' && (memoData || memoLoading) ? (
+      {activePanel === 'chart' && (chartData || chartLoading) ? (
+        <ChartPanel />
+      ) : activePanel === 'memo' && (memoData || memoLoading) ? (
         <MemoPanel />
       ) : activePanel === 'analysis' && (running || allStepsDone) ? (
         <AnalysisPanel />
@@ -2651,23 +3641,23 @@ export function WorkbookChat({
     </ModifyContext.Provider>
 
       {/* Rename dialog */}
-      {renameDialogOpen && (
+      {renameDialog && (
         <div className="wbc__dialog-overlay">
           <Dialog
             size="sm"
             state="default"
-            title="Rename Workbook"
+            title={RENAME_LABELS[renameDialog.type].title}
             cancelLabel="Cancel"
             confirmLabel="Rename"
-            onClose={() => setRenameDialogOpen(false)}
-            onCancel={() => setRenameDialogOpen(false)}
-            onConfirm={() => setRenameDialogOpen(false)}
+            onClose={() => setRenameDialog(null)}
+            onCancel={() => setRenameDialog(null)}
+            onConfirm={() => setRenameDialog(null)}
           >
             <TextInput
-              label="Workbook name"
-              placeholder="Enter workbook name"
-              value={renameValue}
-              onChange={(e) => setRenameValue(e.target.value)}
+              label={RENAME_LABELS[renameDialog.type].label}
+              placeholder={RENAME_LABELS[renameDialog.type].placeholder}
+              value={renameDialog.value}
+              onChange={(e) => setRenameDialog((prev) => ({ ...prev, value: e.target.value }))}
             />
           </Dialog>
         </div>

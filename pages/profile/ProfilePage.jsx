@@ -31,6 +31,7 @@ export function ProfilePage({
         isOpen={menuOpen}
         onToggle={onMenuToggle}
         onProfile={() => onNavigate && onNavigate('profile')}
+        onSettings={() => onNavigate && onNavigate('settings')}
       />
 
       <div className="profile-page__content">

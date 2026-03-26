@@ -499,6 +499,7 @@ export function DashboardView({
         isOpen={menuOpen}
         onToggle={onMenuToggle}
         onProfile={() => onNavigate && onNavigate('profile')}
+        onSettings={() => onNavigate && onNavigate('settings')}
       />
 
       {/* Edit panel — slides in from left */}

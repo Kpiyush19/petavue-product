@@ -129,6 +129,7 @@
   border-color: var(--color-neutral-100);
   color: var(--color-neutral-300);
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -184,6 +185,7 @@
   background-color: transparent;
   color: var(--color-neutral-300);
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------

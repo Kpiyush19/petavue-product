@@ -5,6 +5,10 @@ import { WorkbookChat } from '../pages/workbook_chat';
 import { DashboardList } from '../pages/dashboard_list';
 import { DashboardView } from '../pages/dashboard_view';
 import { ProfilePage } from '../pages/profile';
+import { DataHub } from '../pages/data_hub';
+import { ProjectList } from '../pages/projects';
+import { SettingsPage } from '../pages/settings';
+import { ReportList } from '../pages/reports';
 
 const USER = { name: 'Ammie Diego', initials: 'AD', email: 'ammie.diego@work.com' };
 
@@ -18,10 +22,18 @@ export function App() {
       setPage('workbooks');
     } else if (id === 'dashboard') {
       setPage('dashboards');
+    } else if (id === 'data-hub') {
+      setPage('data-hub');
+    } else if (id === 'project') {
+      setPage('projects');
+    } else if (id === 'reports') {
+      setPage('reports');
     } else if (id === 'new-chat') {
       setPage('home');
     } else if (id === 'profile') {
       setPage('profile');
+    } else if (id === 'settings') {
+      setPage('settings');
     }
   }
 
@@ -71,6 +83,38 @@ export function App() {
         {...menuProps}
         onNewDashboard={() => setPage('dashboards')}
         onOpenDashboard={() => setPage('dashboard-view')}
+      />
+    );
+  }
+
+  if (page === 'data-hub') {
+    return (
+      <DataHub
+        {...menuProps}
+      />
+    );
+  }
+
+  if (page === 'projects') {
+    return (
+      <ProjectList
+        {...menuProps}
+      />
+    );
+  }
+
+  if (page === 'reports') {
+    return (
+      <ReportList
+        {...menuProps}
+      />
+    );
+  }
+
+  if (page === 'settings') {
+    return (
+      <SettingsPage
+        {...menuProps}
       />
     );
   }

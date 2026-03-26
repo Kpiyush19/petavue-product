@@ -125,6 +125,7 @@ export function DashboardList({
         isOpen={menuOpen}
         onToggle={onMenuToggle}
         onProfile={() => onNavigate && onNavigate('profile')}
+        onSettings={() => onNavigate && onNavigate('settings')}
       />
 
       <div className="dashboard-list__body">

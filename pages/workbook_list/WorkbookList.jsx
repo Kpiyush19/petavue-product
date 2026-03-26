@@ -137,6 +137,7 @@ export function WorkbookList({
         isOpen={menuOpen}
         onToggle={onMenuToggle}
         onProfile={() => onNavigate && onNavigate('profile')}
+        onSettings={() => onNavigate && onNavigate('settings')}
       />
 
       <div className="workbook-list__body">

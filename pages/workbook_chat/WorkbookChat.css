@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
+  height: 60px;
   padding: var(--spacing-12) var(--spacing-16);
   border-bottom: var(--border-default) solid var(--color-neutral-100);
   background: var(--color-white);
@@ -1154,7 +1154,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-24);
-  height: 56px;
+  height: 60px;
   padding: var(--spacing-12) var(--spacing-24);
   background: var(--color-white);
   border-bottom: var(--border-default) solid var(--color-neutral-100);
@@ -2295,7 +2295,684 @@
   flex-shrink: 0;
 }
 
+/* ==========================================================================
+   Panel Title Dropdown — Rename / Clone / Delete on header click
+   ========================================================================== */
+
+.wbc__panel-title-dropdown-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wbc__panel-title-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.wbc__panel-title-dropdown-trigger:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.wbc__panel-title-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 156px;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-100);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 30;
+  overflow: hidden;
+}
+
+.wbc__panel-title-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-1);
+  color: #292635;
+  transition: background-color 0.15s ease;
+}
+
+.wbc__panel-title-dropdown-item:hover {
+  background-color: var(--color-primary-50);
+}
+
+.wbc__panel-title-dropdown-item--danger {
+  color: #F93D3D;
+}
+
+/* Chart count badge — blue pill in action card meta */
+.wbc__chart-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background-color: var(--color-primary-500);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
+  white-space: nowrap;
+}
+
 /* Action card cursor when clickable */
 .wbc__action-card[role="button"] {
   cursor: pointer;
+}
+
+/* ==========================================================================
+   Chart Panel — right panel for Create Chart mode
+   ========================================================================== */
+
+.wbc__chart-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wbc__chart-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 9px var(--spacing-24);
+  gap: var(--spacing-24);
+  border-bottom: 1px solid var(--color-neutral-100);
+  background: var(--color-white);
+  box-shadow: 0 4px 4px rgba(122, 122, 122, 0.04);
+  flex-shrink: 0;
+}
+
+.wbc__chart-panel-title-area {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  flex: 1;
+  min-width: 0;
+}
+
+.wbc__chart-panel-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-h2);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wbc__chart-panel-title strong {
+  font-weight: var(--font-weight-medium);
+}
+
+.wbc__chart-panel-timestamp {
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.wbc__chart-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-12);
+  background-color: #fcfcfc;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+
+.wbc__chart-panel-body--loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-12);
+}
+
+.wbc__chart-loading-text {
+  font-size: var(--font-size-body-2);
+  color: var(--color-text-secondary);
+}
+
+/* Chart section */
+.wbc__chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+
+.wbc__chart-section-title {
+  padding: 0;
+}
+
+.wbc__chart-section-divider {
+  height: 1px;
+  background-color: var(--color-neutral-100);
+  margin: var(--spacing-4) 0;
+}
+
+/* Tabs + actions row */
+.wbc__chart-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wbc__chart-tabs {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  background-color: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-100);
+  border-radius: 8px;
+  padding: 1px;
+  overflow: hidden;
+}
+
+.wbc__chart-tab-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+}
+
+.wbc__chart-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--color-icon-medium);
+}
+
+.wbc__chart-icon-btn:hover {
+  background-color: var(--color-neutral-50);
+}
+
+/* Chart container */
+.wbc__chart-container {
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-100);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Pie chart */
+.wbc__chart-pie-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-16);
+}
+
+.wbc__chart-pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-24);
+  justify-content: center;
+  margin-bottom: var(--spacing-12);
+}
+
+.wbc__chart-pie-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.wbc__chart-pie-legend-swatch {
+  width: 24px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.wbc__chart-pie-legend-label {
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+/* Bar chart */
+.wbc__chart-bar-wrapper {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-24);
+  position: relative;
+}
+
+.wbc__chart-bar-y-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 10px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  line-height: 16px;
+}
+
+.wbc__chart-bar-inner {
+  flex: 1;
+  padding-left: 40px;
+}
+
+.wbc__chart-bar-x-label {
+  text-align: center;
+  font-size: 10px;
+  color: var(--color-text-primary);
+  line-height: 16px;
+  margin-top: var(--spacing-4);
+}
+
+/* Modify Chart wrapper */
+.wbc__chart-modify-wrap {
+  padding: var(--spacing-16);
+  padding-top: 0;
+}
+
+/* Chart footer */
+.wbc__chart-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-10);
+  padding: var(--spacing-16) var(--spacing-24);
+  border-top: 1px solid var(--color-neutral-100);
+  background: var(--color-white);
+  flex-shrink: 0;
+}
+
+/* Chart tooltip */
+.wbc__chart-tooltip {
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-100);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.wbc__chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wbc__chart-tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.wbc__chart-tooltip-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.wbc__chart-tooltip-value {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin: 4px 0 0;
+}
+
+/* ==========================================================================
+   Use in Sage Dialog
+   ========================================================================== */
+
+.wbc__sage-dialog {
+  background: var(--color-white);
+  border-radius: 12px;
+  border-top: 4px solid var(--color-primary-500);
+  box-shadow: 0 12px 12px rgba(122, 122, 122, 0.08);
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wbc__sage-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-16) var(--spacing-12);
+}
+
+.wbc__sage-dialog-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.wbc__sage-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding: var(--spacing-16) var(--spacing-12);
+}
+
+.wbc__sage-dialog-desc-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  align-items: flex-end;
+}
+
+.wbc__sage-dialog-desc-group .textarea-wrapper {
+  width: 100%;
+}
+
+.wbc__sage-dialog-regen {
+  flex-shrink: 0;
+}
+
+.wbc__sage-required {
+  color: var(--color-primary-500);
+}
+
+/* Regenerate spinner label */
+.wbc__regen-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wbc__sage-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-16) var(--spacing-12);
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+/* ==========================================================================
+   Added to Dashboard dropdown button
+   ========================================================================== */
+
+.wbc__added-dash-wrap {
+  position: relative;
+}
+
+.wbc__added-dash-btn {
+  gap: 6px;
+}
+
+.wbc__added-dash-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 200px;
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  overflow: hidden;
+}
+
+.wbc__added-dash-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-2);
+  line-height: var(--line-height-body-2);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.wbc__added-dash-dropdown-item:first-child {
+  background-color: var(--color-primary-50);
+}
+
+.wbc__added-dash-dropdown-item:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.wbc__added-dash-dropdown-item--danger {
+  color: #F93D3D;
+}
+
+/* ==========================================================================
+   Dashboard Picker (Add to Dashboard dialog)
+   ========================================================================== */
+
+.wbc__dash-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wbc__dash-picker-label {
+  color: var(--color-text-primary);
+}
+
+.wbc__dash-picker-field {
+  position: relative;
+}
+
+.wbc__dash-picker-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 6px 16px;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.wbc__dash-picker-placeholder {
+  color: var(--color-text-disabled);
+  font-size: var(--font-size-body-1);
+  line-height: var(--line-height-body-1);
+}
+
+.wbc__dash-picker-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+  align-items: center;
+}
+
+/* Selected dashboard tag chip */
+.wbc__dash-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  background-color: var(--color-primary-100);
+  border-radius: 8px;
+  font-size: var(--font-size-body-2);
+  line-height: var(--line-height-body-2);
+  color: var(--color-text-primary);
+}
+
+.wbc__dash-tag-new {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background-color: var(--color-primary-50);
+  border: 0.75px solid var(--color-primary-500);
+  border-radius: 20px;
+  font-size: 10px;
+  line-height: 16px;
+  color: var(--color-primary-500);
+}
+
+.wbc__dash-tag-name {
+  white-space: nowrap;
+}
+
+.wbc__dash-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Inline search inside the input */
+.wbc__dash-picker-search {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  line-height: var(--line-height-body-1);
+  color: var(--color-text-primary);
+  flex: 1;
+  min-width: 80px;
+  padding: 0;
+}
+
+.wbc__dash-picker-search::placeholder {
+  color: var(--color-text-disabled);
+}
+
+/* Dropdown — opens upward */
+.wbc__dash-picker-dropdown {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-100);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable list area */
+.wbc__dash-picker-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Checkbox row */
+.wbc__dash-picker-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.wbc__dash-picker-option:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.wbc__dash-picker-option .checkbox {
+  pointer-events: none;
+}
+
+.wbc__dash-picker-option-label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-1);
+  color: #292635;
+}
+
+/* Create new row */
+.wbc__dash-picker-create {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--color-neutral-100);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.wbc__dash-picker-create:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.wbc__dash-picker-create-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 8px;
+}
+
+.wbc__dash-picker-create-text {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body-1);
+  color: var(--color-primary-500);
+  white-space: nowrap;
+}
+
+.wbc__dash-picker-create-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body-1);
+  color: #292635;
+  white-space: nowrap;
 }
