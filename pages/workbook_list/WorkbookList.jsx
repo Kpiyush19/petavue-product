@@ -88,13 +88,15 @@ function ActionDropdown({ onClose }) {
   );
 }
 
-function WorkbookRow({ index, workbook }) {
+function WorkbookRow({ index, workbook, onSelect }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="workbook-list__row">
+    <div className={`workbook-list__row${onSelect ? ' workbook-list__row--clickable' : ''}`} onClick={onSelect ? () => onSelect(workbook) : undefined}>
       <span className="workbook-list__row-num">{index}.</span>
-      <span className="workbook-list__row-name">{workbook.name}</span>
+      <span
+        className={`workbook-list__row-name${onSelect ? ' workbook-list__row-name--clickable' : ''}`}
+      >{workbook.name}</span>
       <span className="workbook-list__col-status">
         <StatusTag status={workbook.status} />
       </span>
@@ -117,6 +119,7 @@ export function WorkbookList({
   user = { name: 'Ammie Diego', initials: 'AD', email: 'ammie.diego@work.com' },
   onNavigate,
   onNewWorkbook,
+  onSelectWorkbook,
   menuOpen,
   onMenuToggle,
 }) {
@@ -196,7 +199,12 @@ export function WorkbookList({
             </div>
             <div className="workbook-list__rows">
               {filtered.map((wb, i) => (
-                <WorkbookRow key={wb.id} index={i + 1} workbook={wb} />
+                <WorkbookRow
+                  key={wb.id}
+                  index={i + 1}
+                  workbook={wb}
+                  onSelect={wb.id === 1 ? onSelectWorkbook : undefined}
+                />
               ))}
             </div>
           </div>

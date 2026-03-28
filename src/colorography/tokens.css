@@ -94,13 +94,18 @@
   --color-tag-violet: #F0E8FF;
 
   /* --------------------------------------------------------------------------
-     Chart Palette (derived from Primary blue scale)
+     Chart Palette (from Figma design system)
      -------------------------------------------------------------------------- */
-  --color-chart-1: var(--color-primary-500);   /* #3661ED */
-  --color-chart-2: #C0D9FF;
-  --color-chart-3: #6BA0FC;
-  --color-chart-4: #97CBFE;
-  --color-chart-5: #A1B5E4;
+  --color-chart-1: #4DA2F7;
+  --color-chart-2: #93C8FB;
+  --color-chart-3: #B472F9;
+  --color-chart-4: #CA9EFB;
+  --color-chart-5: #24C1DA;
+  --color-chart-6: #7FDBEB;
+  --color-chart-7: #686BFB;
+  --color-chart-8: #8489FD;
+  --color-chart-9: #37DAE6;
+  --color-chart-10: #B0EFF3;
 
   /* --------------------------------------------------------------------------
      Misc

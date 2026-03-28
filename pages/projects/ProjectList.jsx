@@ -312,7 +312,7 @@ function ProjectRow({ project, onRename, onDelete, onOpen }) {
             </button>
           </div>
         ) : (
-          <span className="project-list__row-name">{project.name}</span>
+          <span className="project-list__row-name project-list__row-name--clickable">{project.name}</span>
         )}
       </div>
       <div className="project-list__dots-wrapper">

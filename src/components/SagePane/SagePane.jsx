@@ -14,6 +14,45 @@ const MIN_WIDTH = 380;
 const DEFAULT_WIDTH = 450;
 const MAX_WIDTH = 730;
 
+const DEFAULT_MESSAGES = [
+  {
+    type: 'user',
+    text: 'How is "Account Pulse" determined in the at-risk accounts widget?',
+  },
+  {
+    type: 'ai',
+    steps: [
+      { label: 'Found 3 relevant tables', loadingLabel: 'Picking relevant tables', content: 'Alby New Business Pipeline Workbook (Priyanka) · Reviewed by John +2', status: 'done' },
+      { label: 'Found 4 relevant tables', loadingLabel: 'Picking relevant tables', content: 'Activity Metrics by Win Status · Activity Performance Metrics by Quarter Win Status · Activity Bucket Win Rate Analysis', status: 'done' },
+      { label: "Here's the plan:", loadingLabel: 'Generating the plan', content: ['Identify the Account Pulse column in the Accounts at Risk widget', 'Trace the underlying fields and scoring model', 'Map the input signal weights', 'Retrieve the classification thresholds', 'Check which Key Definitions filter the widget', 'Flag any accounts in Severe Risk status'], status: 'done' },
+    ],
+    body: [
+      'The Account Pulse column is a derived health classification based on a composite scoring model defined in this analysis.',
+      'It uses four input signals: Health Score from accounts__HealthScore (weighted at 40%), Churn Probability from accounts__ChurnProbability (30%), NPS Response from accounts__NPS_Score__c (15%), and Product Usage over the last 30 days from accounts__UsageIndex_30d (15%).',
+      'The composite score maps to three labels. <span class="text-body-1-medium">Fairly Satisfied</span> is a score between 60–100, <span class="text-body-1-medium">Some Risk</span> falls between 35–59, and <span class="text-body-1-medium">Severe Risk</span> is anything from 0–34.',
+      'Of the accounts shown, Datapine ($48,670 ARR) is the only one currently flagged as Severe Risk — worth immediate attention.',
+    ],
+  },
+  { type: 'divider', timestamp: 'Jan 21, 2026 at 10:32 AM PST' },
+  {
+    type: 'user',
+    text: 'Are accounts with repeated activity spikes (meetings, follow-ups) more likely to convert or stall?',
+  },
+  {
+    type: 'ai',
+    steps: [
+      { label: 'Found 4 relevant tables', loadingLabel: 'Picking relevant tables', content: 'Account Health Overview · Accounts at Risk · Average Health by Segment · Sales Cycle Friction', status: 'done' },
+      { label: "Here's the plan:", loadingLabel: 'Generating the plan', content: ['Scan the screen to identify distinct widgets', 'Map each widget to its source', 'Extract primary fields', 'Separate opportunity-level from account-level', 'Structure the summary'], status: 'done' },
+      { label: 'Response Generated', loadingLabel: 'Generating response', status: 'done' },
+    ],
+    body: [
+      'Accounts with moderate and consistent activity show the highest conversion rates.',
+      'Accounts with repeated activity spikes demonstrate lower win rates compared to moderate activity buckets, longer average sales cycles, and higher likelihood of moving into stalled or closed-lost categories.',
+      'The pattern suggests that repeated spikes are often reactive behavior — increased follow-ups due to uncertainty or lack of buyer momentum — rather than a strong buying signal.',
+    ],
+  },
+];
+
 /**
  * SagePane — right-side overlay panel for the Sage AI chatbot.
  *
@@ -22,7 +61,7 @@ const MAX_WIDTH = 730;
  * @param {function} props.onClose — called when the X button is clicked
  * @param {string} [props.className]
  */
-export function SagePane({ open, onClose, className }) {
+export function SagePane({ open, onClose, className, messages }) {
   const paneRef = useRef(null);
   const messagesRef = useRef(null);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
@@ -165,152 +204,35 @@ export function SagePane({ open, onClose, className }) {
           <div className="sage-pane__thread">
           {/* Scrollable message body */}
           <div className="sage-pane__messages" ref={messagesRef}>
-            {/* 1. System welcome message */}
+            {/* System welcome message */}
             <SystemMessage />
 
-            {/* 2. First user question */}
-            <UserMessage
-              initials="AU"
-              text={'How is "Account Pulse" determined in the at-risk accounts widget?'}
-            />
-
-            {/* 3. First AI response with thought process */}
-            <AiResponse>
-              <ThoughtProcess
-                completed
-                defaultExpanded={false}
-                steps={[
-                  {
-                    label: 'Found 3 relevant tables',
-                    loadingLabel: 'Picking relevant tables',
-                    content: 'Alby New Business Pipeline Workbook (Priyanka) · Reviewed by John +2',
-                    status: 'done',
-                  },
-                  {
-                    label: 'Found 4 relevant tables',
-                    loadingLabel: 'Picking relevant tables',
-                    content: 'Activity Metrics by Win Status · Activity Performance Metrics by Quarter Win Status · Activity Bucket Win Rate Analysis',
-                    status: 'done',
-                  },
-                  {
-                    label: "Here's the plan:",
-                    loadingLabel: 'Generating the plan',
-                    content: [
-                      'Identify the Account Pulse column in the Accounts at Risk widget',
-                      'Trace the underlying fields and scoring model used to compute the composite health score',
-                      'Map the input signal weights — Health Score, Churn Probability, NPS, and Usage',
-                      'Retrieve the classification thresholds for each Pulse label',
-                      'Check which Key Definitions filter the widget to surface at-risk accounts',
-                      'Flag any accounts in Severe Risk status for immediate visibility',
-                    ],
-                    status: 'done',
-                  },
-                ]}
-              />
-              <div className="sage-pane__ai-body">
-                <p>
-                  The Account Pulse column is a derived health classification
-                  based on a composite scoring model defined in this analysis.
-                </p>
-                <p>
-                  It uses four input signals: Health Score from
-                  accounts__HealthScore (weighted at 40%), Churn Probability from
-                  accounts__ChurnProbability (30%), NPS Response from
-                  accounts__NPS_Score__c (15%), and Product Usage over the last
-                  30 days from accounts__UsageIndex_30d (15%).
-                </p>
-                <p>
-                  The composite score maps to three labels.{' '}
-                  <span className="text-body-1-medium">Fairly Satisfied</span>{' '}
-                  is a score between 60–100,{' '}
-                  <span className="text-body-1-medium">Some Risk</span> falls
-                  between 35–59, and{' '}
-                  <span className="text-body-1-medium">Severe Risk</span> is
-                  anything from 0–34.
-                </p>
-                <p>
-                  The At-Risk Account Key Definition filters this widget to only
-                  show accounts scoring below 60 — meaning &quot;Some Risk&quot;
-                  and &quot;Severe Risk&quot; — plus any &quot;Fairly
-                  Satisfied&quot; accounts whose churn probability exceeds 25%.
-                  Of the accounts shown, Datapine ($48,670 ARR) is the only one
-                  currently flagged as Severe Risk — worth immediate attention.
-                </p>
-                <p>If you&apos;d like, I can now:</p>
-                <ol className="sage-pane__numbered-list">
-                  <li>
-                    What fields are used to calculate the Account Health Score?
-                  </li>
-                  <li>
-                    What Key Definitions filter the at-risk accounts list?
-                  </li>
-                </ol>
-              </div>
-            </AiResponse>
-
-            {/* 4. Dashboard refreshed divider */}
-            <DashboardRefreshedDivider
-              timestamp="Jan 21, 2026 at 10:32 AM PST"
-            />
-
-            {/* 5. Second user question */}
-            <UserMessage
-              initials="AU"
-              text="Are accounts with repeated activity spikes (meetings, follow-ups) more likely to convert or stall?"
-            />
-
-            {/* 6. Second AI response with thought process */}
-            <AiResponse>
-              <ThoughtProcess
-                completed
-                defaultExpanded={false}
-                steps={[
-                  {
-                    label: 'Found 4 relevant tables',
-                    loadingLabel: 'Picking relevant tables',
-                    content: 'Account Health Overview · Accounts at Risk · Average Health by Segment · Sales Cycle Friction',
-                    status: 'done',
-                  },
-                  {
-                    label: "Here's the plan:",
-                    loadingLabel: 'Generating the plan',
-                    content: [
-                      'Scan the screen to identify distinct widgets and data groupings',
-                      'Map each widget to its likely workbook source (health, risk, sales cycle, activity)',
-                      'Extract the primary fields shown in each section (dates, ARR, pulse, segment, cycle length)',
-                      'Separate opportunity-level tables from account-level summaries',
-                      'Structure the summary in top-to-bottom screen order without adding interpretation',
-                    ],
-                    status: 'done',
-                  },
-                  { label: 'Preparing step-by-step instructions', status: 'done' },
-                  { label: 'Executing the instructions', status: 'done' },
-                  { label: 'Response Generated', loadingLabel: 'Generating response', status: 'done' },
-                ]}
-              />
-              <div className="sage-pane__ai-body">
-                <p>
-                  Accounts with moderate and consistent activity show the highest
-                  conversion rates.
-                </p>
-                <p>
-                  Accounts with repeated activity spikes demonstrate:
-                </p>
-                <p>
-                  Lower win rates compared to moderate activity buckets
-                </p>
-                <p>Longer average sales cycles</p>
-                <p>
-                  Higher likelihood of moving into stalled or closed-lost
-                  categories
-                </p>
-                <p>
-                  The pattern suggests that repeated spikes are often reactive
-                  behavior — increased follow-ups due to uncertainty or lack of
-                  buyer momentum — rather than a strong buying signal.
-                </p>
-              </div>
-            </AiResponse>
+            {/* Dynamic messages from prop or defaults */}
+            {(messages || DEFAULT_MESSAGES).map((msg, i) => {
+              if (msg.type === 'user') {
+                return <UserMessage key={i} initials="AD" text={msg.text} />;
+              }
+              if (msg.type === 'ai') {
+                return (
+                  <AiResponse key={i}>
+                    <ThoughtProcess
+                      completed
+                      defaultExpanded={false}
+                      steps={msg.steps}
+                    />
+                    <div className="sage-pane__ai-body">
+                      {msg.body.map((paragraph, j) => (
+                        <p key={j} dangerouslySetInnerHTML={{ __html: paragraph }} />
+                      ))}
+                    </div>
+                  </AiResponse>
+                );
+              }
+              if (msg.type === 'divider') {
+                return <DashboardRefreshedDivider key={i} timestamp={msg.timestamp} />;
+              }
+              return null;
+            })}
           </div>
 
           {/* Text input pinned at bottom */}

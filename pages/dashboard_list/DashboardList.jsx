@@ -66,7 +66,7 @@ function DashboardRow({ index, dashboard, onOpen }) {
   return (
     <div className="dashboard-list__row" onClick={() => onOpen && onOpen(dashboard.id)}>
       <span className="dashboard-list__row-num">{index}.</span>
-      <span className="dashboard-list__row-name">{dashboard.name}</span>
+      <span className="dashboard-list__row-name dashboard-list__row-name--clickable">{dashboard.name}</span>
       <span className="dashboard-list__col-visibility">
         <span className="dashboard-list__visibility">
           {dashboard.visibility === 'private' ? (

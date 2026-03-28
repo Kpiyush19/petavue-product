@@ -189,9 +189,58 @@
   gap: var(--spacing-16);
 }
 
-/* Single column in edit mode */
+/* Edit mode — keep 2-column grid, widgets can span 1 or 2 cols */
 .dashboard-view__grid--editing {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Grid item wrapper in edit mode */
+.dashboard-view__grid-item {
+  position: relative;
+}
+
+/* Full-width widget in edit mode */
+.dashboard-view__grid-item--full {
+  grid-column: 1 / -1;
+}
+
+/* Dragging state */
+.dashboard-view__grid-item--dragging {
+  opacity: 0.5;
+}
+
+.dashboard-view__grid-item--drag-over {
+  outline: 2px dashed var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+
+/* Right-edge resize handle */
+.dashboard-view__resize-handle {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  width: 16px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+}
+
+.dashboard-view__resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  border-radius: 2px;
+  background: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.dashboard-view__resize-handle:hover::after {
+  background-color: var(--color-primary-500);
 }
 
 /* ==========================================================================
@@ -201,8 +250,8 @@
 .dv-edit-panel {
   display: flex;
   flex-direction: column;
-  width: 272px;
-  min-width: 272px;
+  width: 360px;
+  min-width: 360px;
   height: 100vh;
   background-color: var(--color-white);
   border-right: var(--border-default) solid var(--color-neutral-100);
@@ -253,6 +302,7 @@
 .dv-edit-panel__list {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-8);
   flex: 1;
   overflow-y: auto;
 }
@@ -260,14 +310,17 @@
 .dv-edit-panel__item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-8);
-  padding: var(--spacing-8) var(--spacing-4);
+  gap: var(--spacing-12);
+  padding: var(--spacing-12);
   border-radius: var(--radius-md);
+  border: 0.5px solid var(--color-neutral-200);
   position: relative;
+  transition: border-color 0.15s ease;
+  cursor: pointer;
 }
 
 .dv-edit-panel__item:hover {
-  background-color: var(--color-neutral-50);
+  border-color: var(--color-primary-500);
 }
 
 /* Checkbox */
@@ -295,9 +348,9 @@
   flex: 1;
   min-width: 0;
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-body-2);
+  font-size: var(--font-size-body-1);
   font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-body-2);
+  line-height: var(--line-height-body-1);
   color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -307,6 +360,25 @@
 .dv-edit-panel__item-actions {
   position: relative;
   flex-shrink: 0;
+}
+
+/* Tooltip for truncated widget names */
+.dv-edit-panel__item-tooltip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: var(--spacing-12);
+  right: var(--spacing-12);
+  z-index: 50;
+  background-color: var(--color-neutral-700);
+  border-radius: 6px;
+  padding: var(--spacing-4) var(--spacing-12);
+  box-shadow: 0px 12px 12px 0px rgba(177, 177, 177, 0.1);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  color: var(--color-white);
+  pointer-events: none;
 }
 
 .dv-edit-panel__dots-btn {
@@ -483,6 +555,72 @@
   white-space: nowrap;
 }
 
+.dv-pie-legend__item--hidden .dv-pie-legend__swatch {
+  background-color: var(--color-neutral-200) !important;
+  opacity: 1 !important;
+}
+
+.dv-pie-legend__item--hidden .dv-pie-legend__label {
+  color: var(--color-text-disabled);
+  text-decoration: line-through;
+  opacity: 1 !important;
+}
+
+/* ---- Inline chart legend (for line/bar/area multi-series) ---- */
+.dv-chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-4) 0;
+}
+
+.dv-chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  cursor: pointer;
+  padding: var(--spacing-2) var(--spacing-6);
+  border-radius: var(--radius-sm);
+  transition: opacity 0.15s ease;
+  user-select: none;
+}
+
+.dv-chart-legend__item:hover {
+  background: var(--color-neutral-50);
+}
+
+.dv-chart-legend__swatch {
+  width: var(--spacing-16);
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.dv-chart-legend__swatch--bar {
+  height: var(--spacing-12);
+  width: var(--spacing-16);
+  border-radius: 2px;
+}
+
+.dv-chart-legend__label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-metadata);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-metadata);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.dv-chart-legend__item--hidden .dv-chart-legend__swatch {
+  background-color: var(--color-neutral-200) !important;
+}
+
+.dv-chart-legend__item--hidden .dv-chart-legend__label {
+  color: var(--color-text-disabled);
+  text-decoration: line-through;
+}
+
 /* ==========================================================================
    Bar Chart Widget
    ========================================================================== */
@@ -559,4 +697,186 @@
   height: var(--spacing-8);
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+/* Positive / negative change indicators */
+.dv-positive {
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+.dv-negative {
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   Share Dashboard Dialog
+   ========================================================================== */
+
+.share-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: share-overlay-in 0.15s ease;
+}
+
+@keyframes share-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes share-dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.share-dialog {
+  width: 460px;
+  background: var(--color-white);
+  border-radius: 12px;
+  border-top: 4px solid var(--color-primary-500);
+  box-shadow: 0px 8px 24px 0px rgba(144, 144, 144, 0.1);
+  overflow: hidden;
+  animation: share-dialog-in 0.2s ease;
+}
+
+.share-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-16) var(--spacing-12) 10px;
+}
+
+.share-dialog__title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-semibold);
+  line-height: 26px;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.share-dialog__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Body */
+.share-dialog__body {
+  padding: 10px var(--spacing-12) var(--spacing-16);
+}
+
+.share-dialog__options {
+  background: var(--color-white);
+  border: 0.5px solid var(--color-neutral-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.share-dialog__option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-12);
+  width: 100%;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.share-dialog__option:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.share-dialog__option-icon {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.share-dialog__option-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.share-dialog__option-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-1);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body-1);
+  color: var(--color-text-primary);
+}
+
+.share-dialog__option-title--muted {
+  color: var(--color-text-secondary);
+}
+
+.share-dialog__option-desc {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  color: var(--color-neutral-600);
+}
+
+.share-dialog__divider {
+  height: 0;
+  border-top: 0.5px solid var(--color-neutral-200);
+}
+
+/* Footer with Copy Link */
+.share-dialog__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  padding: 10px var(--spacing-12) var(--spacing-16);
+  animation: share-footer-in 0.2s ease;
+}
+
+@keyframes share-footer-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.share-dialog__copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-6);
+  height: 32px;
+  width: 100%;
+  padding: var(--spacing-6) var(--spacing-12);
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: var(--color-primary-500);
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-2);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.share-dialog__copy-btn:hover {
+  background-color: var(--color-primary-800);
 }

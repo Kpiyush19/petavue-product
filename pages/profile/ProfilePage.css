@@ -31,7 +31,7 @@
 .profile-page__header {
   display: flex;
   align-items: center;
-  height: 56px;
+  height: 60px;
   padding: var(--spacing-16) var(--spacing-24);
   background-color: var(--color-white);
   border-bottom: var(--border-default) solid var(--color-neutral-100);

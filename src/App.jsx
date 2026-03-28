@@ -16,6 +16,7 @@ export function App() {
   const [page, setPage] = useState('home');
   const [chatQuery, setChatQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeDashboardId, setActiveDashboardId] = useState(null);
 
   function handleNavigate(id) {
     if (id === 'chats') {
@@ -63,6 +64,10 @@ export function App() {
         {...menuProps}
         page={page}
         onNewWorkbook={() => setPage('home')}
+        onSelectWorkbook={() => {
+          setChatQuery('');
+          setPage('chat');
+        }}
       />
     );
   }
@@ -82,7 +87,7 @@ export function App() {
       <DashboardList
         {...menuProps}
         onNewDashboard={() => setPage('dashboards')}
-        onOpenDashboard={() => setPage('dashboard-view')}
+        onOpenDashboard={(id) => { setActiveDashboardId(id); setPage('dashboard-view'); }}
       />
     );
   }
@@ -123,6 +128,7 @@ export function App() {
     return (
       <DashboardView
         {...menuProps}
+        dashboardId={activeDashboardId}
         onBack={() => setPage('dashboards')}
       />
     );
